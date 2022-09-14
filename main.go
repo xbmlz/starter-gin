@@ -5,22 +5,22 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/xbmlz/starter-gin/core/config"
-	"github.com/xbmlz/starter-gin/core/logger"
-	"github.com/xbmlz/starter-gin/core/router"
+	"github.com/xbmlz/starter-gin/global"
+	"github.com/xbmlz/starter-gin/initialize"
+	"github.com/xbmlz/starter-gin/router"
 )
 
 func main() {
-	// setup config
-	config.Setup()
+	// init config
+	initialize.InitConfig()
 
-	// setup logger
-	logger.Setup()
+	// init logger
+	initialize.InitLogger()
 
-	// init router
-	router := router.InitRouter()
+	// create router
+	router := router.CreateRouter()
 
-	address := fmt.Sprintf("%s:%d", config.App.Server.Address, config.App.Server.Port)
+	address := fmt.Sprintf("%s:%d", global.Config.Server.Address, global.Config.Server.Port)
 
 	server := &http.Server{
 		Addr:           address,

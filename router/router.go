@@ -5,7 +5,7 @@ import (
 	"github.com/xbmlz/starter-gin/api"
 )
 
-func InitRouter() *gin.Engine {
+func CreateRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
