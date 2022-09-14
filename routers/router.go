@@ -1,9 +1,8 @@
 package routers
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"github.com/xbmlz/starter-gin/api"
 )
 
 func InitRouter() *gin.Engine {
@@ -12,10 +11,6 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Recovery())
 
 	// health check
-	r.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
+	r.GET("/ping", api.Ping)
 	return r
 }

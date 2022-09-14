@@ -1,11 +1,10 @@
 # Starter Gin
 
-## ✨ Features
+## 🚧 WIP
 
-## 📦 Local development
-
-### Environmental requirements
-
-- go 1.18
-
-
+- [x] Gin
+- [x] Viper
+- [ ] Zap
+- [ ] Docker
+- [ ] Jwt
+- [ ] Mysql
