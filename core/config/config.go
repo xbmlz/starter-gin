@@ -9,7 +9,8 @@ import (
 )
 
 type Log struct {
-	Path string
+	Path  string `yaml:"path"`
+	Level string `yaml:"level"`
 }
 
 type Server struct {

@@ -7,7 +7,7 @@ import (
 
 	"github.com/xbmlz/starter-gin/core/config"
 	"github.com/xbmlz/starter-gin/core/logger"
-	"github.com/xbmlz/starter-gin/routers"
+	"github.com/xbmlz/starter-gin/core/router"
 )
 
 func main() {
@@ -18,7 +18,7 @@ func main() {
 	logger.Setup()
 
 	// init router
-	router := routers.InitRouter()
+	router := router.InitRouter()
 
 	address := fmt.Sprintf("%s:%d", config.App.Server.Address, config.App.Server.Port)
 
@@ -29,8 +29,6 @@ func main() {
 		WriteTimeout:   20 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
-
-	fmt.Println(config.App.Server.Port)
 
 	server.ListenAndServe()
 }
