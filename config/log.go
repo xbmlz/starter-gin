@@ -4,9 +4,7 @@ package config
 type Log struct {
 	Path    string  `yaml:"path"`
 	Level   string  `yaml:"level"`
-	Encoder string  `yaml:"encoder"`
 	Format  string  `yaml:"format"`
-	Prefix  string  `yaml:"prefix"`
 	Archive Archive `yaml:"archive"`
 }
 

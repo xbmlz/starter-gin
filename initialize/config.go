@@ -9,7 +9,7 @@ import (
 	"github.com/xbmlz/starter-gin/utils"
 )
 
-// InitConfig 初始化项目配置
+// 初始化项目配置 https://github.com/spf13/viper
 func InitConfig() {
 	config := utils.GetEnvString("VIPER_PATH", "config.yaml")
 	v := viper.New()

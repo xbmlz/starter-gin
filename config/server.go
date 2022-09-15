@@ -2,7 +2,7 @@ package config
 
 // 服务配置
 type Server struct {
-	RunMode string `yaml:"run-mode"`
+	Mode    string `yaml:"mode"`
 	Address string `yaml:"address"`
 	Port    int    `yaml:"port"`
 }

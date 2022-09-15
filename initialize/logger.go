@@ -3,7 +3,6 @@ package initialize
 import (
 	"os"
 	"path"
-	"strings"
 	"time"
 
 	"github.com/natefinch/lumberjack"
@@ -13,6 +12,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+// 初始化日志 https://github.com/uber-go/zap
 func InitLogger() {
 	logConfig := global.Config.Log
 	// 判断日志目录是否存在，不存在则创建
@@ -21,7 +21,7 @@ func InitLogger() {
 	}
 	// 设置输出格式
 	var encoder zapcore.Encoder
-	if logConfig.Encoder == "json" {
+	if logConfig.Format == "json" {
 		encoder = zapcore.NewJSONEncoder(getEncoderConfig())
 	} else {
 		encoder = zapcore.NewConsoleEncoder(getEncoderConfig())
@@ -31,9 +31,12 @@ func InitLogger() {
 	// 创建zap实例
 	zapCore := zapcore.NewCore(encoder, writeSyncer, getLevel())
 	// 创建logger实例
-	logger := zap.New(zapCore, zap.AddCaller(), zap.AddStacktrace(zap.ErrorLevel))
+	logger := zap.New(zapCore)
+	defer logger.Sync()
 	// 赋值给global
 	global.Logger = logger
+	// Logger
+	zap.ReplaceGlobals(global.Logger)
 }
 
 // getEncoderConfig 自定义日志输出字段
@@ -58,12 +61,13 @@ func getEncoderConfig() zapcore.EncoderConfig {
 
 // getEncodeTime 定义日志输出时间格式
 func getEncodeTime(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
-	enc.AppendString(t.Format("2006-01-02 15:04:05.000"))
+	enc.AppendString(t.Format("2006/01/02 - 15:04:05.000"))
 }
 
 // 获取文件切割和归档配置信息
 func getLumberjackWriteSyncer() zapcore.WriteSyncer {
 	lumberjackConfig := global.Config.Log.Archive
+	// https://github.com/natefinch/lumberjack
 	lumberjackLogger := &lumberjack.Logger{
 		Filename:   getLogFile(),                //日志文件
 		MaxSize:    lumberjackConfig.MaxSize,    //单文件最大容量(单位MB)
@@ -77,12 +81,7 @@ func getLumberjackWriteSyncer() zapcore.WriteSyncer {
 
 // 获取日志文件名
 func getLogFile() string {
-	fileFormat := time.Now().Format(global.Config.Log.Format)
-	fileName := strings.Join([]string{
-		global.Config.Log.Prefix,
-		fileFormat,
-		"log"}, ".")
-	return path.Join(global.Config.Log.Path, fileName)
+	return path.Join(global.Config.Log.Path, global.Config.Log.Level+".log")
 }
 
 // 获取日志级别

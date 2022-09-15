@@ -1,15 +1,20 @@
 server:
+  mode: debug    # debug | release
   address: 0.0.0.0
   port: 8000
 
 log:
   path: ./logs   # 日志文件目录
-  level: error   # 日志级别
-  encoder: json  # 日志格式 json | log
-  prefix: app    # 日志文件前缀
-  format: 2006-01-02
+  level: info    # 日志级别
+  format: log    # 日志格式 json | log
   archive:
     max-size: 1    # 单文件最大容量(单位MB)
     max-backups: 3 # 保留旧文件的最大数量
     max-age: 30    # 旧文件最多保存几天
     compress: true #是否压缩/归档旧文件
+
+datasource:
+  primary: sqlite
+  sqlite:
+    path: sqlite.db
+    

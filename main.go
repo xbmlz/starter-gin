@@ -1,15 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-	"time"
-
-	"github.com/xbmlz/starter-gin/global"
+	"github.com/xbmlz/starter-gin/core"
 	"github.com/xbmlz/starter-gin/initialize"
-	"github.com/xbmlz/starter-gin/router"
 )
 
+//go:generate go env -w GO111MODULE=on
+//go:generate go env -w GOPROXY=https://goproxy.cn,direct
+//go:generate go mod tidy
+//go:generate go mod download
 func main() {
 	// init config
 	initialize.InitConfig()
@@ -17,18 +16,9 @@ func main() {
 	// init logger
 	initialize.InitLogger()
 
-	// create router
-	router := router.CreateRouter()
+	// init datasource
+	initialize.InitDatasource()
 
-	address := fmt.Sprintf("%s:%d", global.Config.Server.Address, global.Config.Server.Port)
-
-	server := &http.Server{
-		Addr:           address,
-		Handler:        router,
-		ReadTimeout:    20 * time.Second,
-		WriteTimeout:   20 * time.Second,
-		MaxHeaderBytes: 1 << 20,
-	}
-
-	server.ListenAndServe()
+	// run server
+	core.RunServer()
 }
