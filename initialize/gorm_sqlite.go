@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func DsSqlite() *gorm.DB {
+func GormSqlite() *gorm.DB {
 	s := global.Config.Datasource.Sqlite
 	if s.Path == "" {
 		return nil

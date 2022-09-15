@@ -2,7 +2,7 @@ package initialize
 
 import "gorm.io/gorm"
 
-func DsMysql() *gorm.DB {
+func GormMysql() *gorm.DB {
 	// TODO
 	return nil
 }

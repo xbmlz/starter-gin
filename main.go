@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/xbmlz/starter-gin/core"
-	"github.com/xbmlz/starter-gin/initialize"
 )
 
 //go:generate go env -w GO111MODULE=on
@@ -15,15 +14,8 @@ import (
 // @description This is a sample Server
 // @BasePath /
 func main() {
-	// init config
-	initialize.InitConfig()
-
-	// init logger
-	initialize.InitLogger()
-
-	// init datasource
-	initialize.InitDatasource()
-
+	// setup
+	core.Setup()
 	// run server
 	core.RunServer()
 }

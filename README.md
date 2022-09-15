@@ -4,7 +4,9 @@
 
 - [x] Gin
 - [x] Viper
-- [ ] Zap
-- [ ] Docker
-- [ ] Jwt
+- [x] Zap
+- [x] Gorm
+- [x] Sqlite
 - [ ] Mysql
+- [ ] Jwt
+- [ ] Docker

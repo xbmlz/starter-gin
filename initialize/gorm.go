@@ -10,13 +10,13 @@ import (
 )
 
 // 初始化数据库 https://github.com/go-gorm/gorm
-func InitDatasource() {
+func Gorm() {
 	var db *gorm.DB
 	switch global.Config.Datasource.Primary {
 	case "mysql":
-		db = DsMysql()
+		db = GormMysql()
 	default:
-		db = DsSqlite()
+		db = GormSqlite()
 	}
 	global.DB = db
 	if global.DB != nil {

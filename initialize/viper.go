@@ -10,7 +10,7 @@ import (
 )
 
 // 初始化项目配置 https://github.com/spf13/viper
-func InitConfig() {
+func Viper() {
 	config := utils.GetEnvString("VIPER_PATH", "config.yaml")
 	v := viper.New()
 	v.SetConfigFile(config)

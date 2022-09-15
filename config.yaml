@@ -17,4 +17,11 @@ datasource:
   primary: sqlite
   sqlite:
     path: sqlite.db
-    
+  mysql:
+    host:
+    username:
+    password:
+  pgsql:
+    host:
+    username:
+    password: 

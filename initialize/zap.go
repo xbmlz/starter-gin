@@ -13,7 +13,7 @@ import (
 )
 
 // 初始化日志 https://github.com/uber-go/zap
-func InitLogger() {
+func Zap() {
 	logConfig := global.Config.Log
 	// 判断日志目录是否存在，不存在则创建
 	if exist := utils.IsDirExists(logConfig.Path); !exist {
