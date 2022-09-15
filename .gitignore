@@ -4,5 +4,6 @@
 .DS_Store
 
 *.db
+*.exe
 
 logs/

@@ -8,6 +8,6 @@ import (
 
 var (
 	Config config.Config // 全局配置
-	Logger *zap.Logger   // 全局日志
+	Log    *zap.Logger   // 全局日志
 	DB     *gorm.DB      // 数据库实例
 )

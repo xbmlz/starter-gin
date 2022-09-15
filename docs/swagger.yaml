@@ -1,4 +1,63 @@
+definitions:
+  model.SysUser:
+    properties:
+      avatar:
+        type: string
+      email:
+        type: string
+      nickName:
+        type: string
+      userName:
+        type: string
+      uuid:
+        type: string
+    type: object
+  request.Register:
+    properties:
+      avatar:
+        type: string
+      nickName:
+        type: string
+      passWord:
+        type: string
+      userName:
+        type: string
+    type: object
+  response.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      msg:
+        type: string
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /user/register:
+    post:
+      parameters:
+      - description: 用户名, 昵称, 密码, 头像
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.Register'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 用户注册账号,返回包括用户信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.SysUser'
+                msg:
+                  type: string
+              type: object
+      summary: 用户注册账号
+      tags:
+      - SysUser
 swagger: "2.0"

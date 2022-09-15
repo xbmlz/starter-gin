@@ -12,7 +12,7 @@ func DsSqlite() *gorm.DB {
 		return nil
 	}
 	// TODO gorm config
-	if db, err := gorm.Open(sqlite.Open(s.Path), &gorm.Config{}); err != nil {
+	if db, err := gorm.Open(sqlite.Open(s.Path), &gorm.Config{DisableForeignKeyConstraintWhenMigrating: true}); err != nil {
 		return nil
 	} else {
 		return db

@@ -9,6 +9,11 @@ import (
 //go:generate go env -w GOPROXY=https://goproxy.cn,direct
 //go:generate go mod tidy
 //go:generate go mod download
+
+// @title Swagger Example API
+// @version 0.0.1
+// @description This is a sample Server
+// @BasePath /
 func main() {
 	// init config
 	initialize.InitConfig()

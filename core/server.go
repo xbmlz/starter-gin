@@ -6,20 +6,16 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/xbmlz/starter-gin/api"
 	"github.com/xbmlz/starter-gin/global"
 )
 
 // 启动服务
 func RunServer() {
-	// 设置服务模式
-	gin.SetMode(global.Config.Server.Mode)
-	engine := gin.New()
-	// 注册公共组件
-	engine.Use(gin.Recovery())
+	// 注册路由
+	engine := api.RegisterRouter()
 	// 创建HTTP服务
 	httpServer := createHttpServer(engine)
-	// 注册路由
-	RegisterRouter(engine)
 	// 打印服务信息
 	printServerInfo()
 	// 启动服务
@@ -45,5 +41,5 @@ func createHttpServer(engine *gin.Engine) *http.Server {
 // 打印服务信息
 func printServerInfo() {
 	serverConfig := global.Config.Server
-	global.Logger.Sugar().Infof("Server started on https://%s:%d", serverConfig.Address, serverConfig.Port)
+	global.Log.Sugar().Infof("Server started on https://%s:%d", serverConfig.Address, serverConfig.Port)
 }

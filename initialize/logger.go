@@ -34,9 +34,9 @@ func InitLogger() {
 	logger := zap.New(zapCore)
 	defer logger.Sync()
 	// 赋值给global
-	global.Logger = logger
+	global.Log = logger
 	// Logger
-	zap.ReplaceGlobals(global.Logger)
+	zap.ReplaceGlobals(global.Log)
 }
 
 // getEncoderConfig 自定义日志输出字段
