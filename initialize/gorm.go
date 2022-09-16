@@ -29,8 +29,8 @@ func autoMigrate(db *gorm.DB) {
 		model.SysUser{},
 	)
 	if err != nil {
-		global.Log.Error("auto migrate table failed", zap.Error(err))
+		global.Log.Error("Auto migrate table failed", zap.Error(err))
 		os.Exit(0)
 	}
-	global.Log.Info("auto migrate table success")
+	global.Log.Info("Auto migrate table success")
 }

@@ -18,3 +18,11 @@ func UserRegister(u model.SysUser) (ret model.SysUser, err error) {
 	err = global.DB.Create(&u).Error
 	return u, err
 }
+
+func UserByUsername(username string) (ret model.SysUser, err error) {
+	var user model.SysUser
+	if errors.Is(global.DB.First(&user, "username = ?", username).Error, gorm.ErrRecordNotFound) {
+		return ret, errors.New("用户名不存在")
+	}
+	return user, err
+}

@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/user/register": {
+        "/login": {
             "post": {
                 "produces": [
                     "application/json"
@@ -24,7 +24,52 @@ const docTemplate = `{
                 "tags": [
                     "SysUser"
                 ],
-                "summary": "用户注册账号",
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "description": "用户名, 密码",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UserLoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回包括用户信息,token,过期时间",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.LoginResponse"
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SysUser"
+                ],
+                "summary": "用户注册",
                 "parameters": [
                     {
                         "description": "用户名, 昵称, 密码, 头像",
@@ -32,7 +77,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/request.Register"
+                            "$ref": "#/definitions/request.UserRegisterRequest"
                         }
                     }
                 ],
@@ -72,18 +117,31 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "integer"
+                },
                 "nickName": {
                     "type": "string"
                 },
                 "userName": {
                     "type": "string"
+                }
+            }
+        },
+        "request.UserLoginRequest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "description": "密码",
+                    "type": "string"
                 },
-                "uuid": {
+                "username": {
+                    "description": "用户名",
                     "type": "string"
                 }
             }
         },
-        "request.Register": {
+        "request.UserRegisterRequest": {
             "type": "object",
             "properties": {
                 "avatar": {
@@ -100,6 +158,20 @@ const docTemplate = `{
                 }
             }
         },
+        "response.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "expiresAt": {
+                    "type": "integer"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/model.SysUser"
+                }
+            }
+        },
         "response.Response": {
             "type": "object",
             "properties": {
@@ -112,17 +184,24 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "x-token",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "0.0.1",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "Swagger Example API",
+	Description:      "This is a sample Server",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

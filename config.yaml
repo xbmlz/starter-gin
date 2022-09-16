@@ -1,8 +1,10 @@
+# server config
 server:
   mode: debug    # debug | release
   address: 0.0.0.0
   port: 8080
 
+# log config
 log:
   path: ./logs   # 日志文件目录
   level: info    # 日志级别
@@ -12,7 +14,16 @@ log:
     max-backups: 3 # 保留旧文件的最大数量
     max-age: 30    # 旧文件最多保存几天
     compress: true #是否压缩/归档旧文件
+  
+# redis config
+redis:
+  enable: false    # 是否启动redis,不启用则使用local cache
+  host: 127.0.0.1
+  port: 6379
+  database: 0
+  password: 
 
+# datasource config
 datasource:
   primary: sqlite
   sqlite:
@@ -25,3 +36,14 @@ datasource:
     host:
     username:
     password: 
+
+# jwt
+jwt:
+  header: x-token
+  signing-key: venable
+  # 过期时间 h
+  expires-time: 2
+  # 刷新时间 h
+  refresh-time: 2
+  issuer: venable
+  

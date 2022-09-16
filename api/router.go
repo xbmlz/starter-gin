@@ -17,7 +17,7 @@ func RegisterRouter() *gin.Engine {
 	gin.SetMode(global.Config.Server.Mode)
 	engine := gin.New()
 	// docs
-	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.BasePath = "/"
 	// swagger
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	// middleware
@@ -31,12 +31,16 @@ func RegisterRouter() *gin.Engine {
 		rootGroup.GET("/ping", func(ctx *gin.Context) {
 			ctx.JSON(http.StatusOK, "ok")
 		})
+		// 注册
+		rootGroup.POST("/register", v1.UserRegister)
+		// 登录
+		rootGroup.POST("/login", v1.UserLogin)
 	}
 	// v1
-	v1Group := engine.Group("/api/v1")
-	{
-		// user
-		v1Group.POST("/user/register", v1.Register)
-	}
+	// v1Group := engine.Group("/api/v1").Use(middleware.JWTAuth())
+	// {
+	// 	// user
+
+	// }
 	return engine
 }

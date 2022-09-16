@@ -21,7 +21,6 @@ func Viper() {
 	}
 	v.WatchConfig()
 	v.OnConfigChange(func(e fsnotify.Event) {
-		fmt.Println("config file is changed:", e.Name)
 		if err = v.Unmarshal(&global.Config); err != nil {
 			fmt.Println(err)
 		}

@@ -19,7 +19,7 @@ func RunServer() {
 	// 打印服务信息
 	printServerInfo()
 	// 启动服务
-	_ = httpServer.ListenAndServe()
+	global.Log.Error(httpServer.ListenAndServe().Error())
 }
 
 // 创建http服务
@@ -41,5 +41,7 @@ func createHttpServer(engine *gin.Engine) *http.Server {
 // 打印服务信息
 func printServerInfo() {
 	serverConfig := global.Config.Server
-	global.Log.Sugar().Infof("Server started on https://%s:%d", serverConfig.Address, serverConfig.Port)
+	fmt.Printf(`
+欢迎使用 venable-admin
+swagger地址 http://127.0.0.1:%d/swagger/index.html`, serverConfig.Port)
 }

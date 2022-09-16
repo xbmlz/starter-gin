@@ -5,14 +5,23 @@ definitions:
         type: string
       email:
         type: string
+      id:
+        type: integer
       nickName:
         type: string
       userName:
         type: string
-      uuid:
+    type: object
+  request.UserLoginRequest:
+    properties:
+      password:
+        description: 密码
+        type: string
+      username:
+        description: 用户名
         type: string
     type: object
-  request.Register:
+  request.UserRegisterRequest:
     properties:
       avatar:
         type: string
@@ -22,6 +31,15 @@ definitions:
         type: string
       userName:
         type: string
+    type: object
+  response.LoginResponse:
+    properties:
+      expiresAt:
+        type: integer
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/model.SysUser'
     type: object
   response.Response:
     properties:
@@ -33,8 +51,37 @@ definitions:
     type: object
 info:
   contact: {}
+  description: This is a sample Server
+  title: Swagger Example API
+  version: 0.0.1
 paths:
-  /user/register:
+  /login:
+    post:
+      parameters:
+      - description: 用户名, 密码
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 返回包括用户信息,token,过期时间
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.LoginResponse'
+                msg:
+                  type: string
+              type: object
+      summary: 用户登录
+      tags:
+      - SysUser
+  /register:
     post:
       parameters:
       - description: 用户名, 昵称, 密码, 头像
@@ -42,7 +89,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/request.Register'
+          $ref: '#/definitions/request.UserRegisterRequest'
       produces:
       - application/json
       responses:
@@ -57,7 +104,12 @@ paths:
                 msg:
                   type: string
               type: object
-      summary: 用户注册账号
+      summary: 用户注册
       tags:
       - SysUser
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: x-token
+    type: apiKey
 swagger: "2.0"
