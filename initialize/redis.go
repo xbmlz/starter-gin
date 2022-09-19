@@ -9,6 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// 初始化Redis
 func Redis() {
 	redisConfig := global.Config.Redis
 	redisAddr := fmt.Sprintf("%s:%d", redisConfig.Host, redisConfig.Port)

@@ -8,5 +8,5 @@
 - [x] Gorm
 - [x] Sqlite
 - [ ] Mysql
-- [ ] Jwt
-- [ ] Docker
+- [x] Jwt
+- [x] Docker
