@@ -1,8 +1,10 @@
-version: '3'
+version: "3.3"
 
 services:
   server:
+    image: ginapp:1.0.0
+    build: .
     container_name: ginapp
     restart: always
     ports:
-      - '8000:8000'
+      - "8000:8000"
