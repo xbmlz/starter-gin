@@ -20,6 +20,11 @@ var (
 		MaxBackups int    `mapstructure:"max_backups"`
 		Compress   bool   `mapstructure:"compress"`
 	}
+
+	Database struct {
+		Type string `mapstructure:"type"`
+		DSN  string `mapstructure:"dsn"`
+	}
 )
 
 func Load(customConf string) error {
@@ -43,6 +48,11 @@ func Load(customConf string) error {
 	// Log
 	if err := v.UnmarshalKey("log", &Log); err != nil {
 		return errors.New("failed to unmarshal [log] config")
+	}
+
+	// Database
+	if err := v.UnmarshalKey("database", &Database); err != nil {
+		return errors.New("failed to unmarshal [database] config")
 	}
 
 	return nil

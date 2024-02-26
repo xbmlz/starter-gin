@@ -9,3 +9,8 @@ log:
   max_backups: 3
   max_size: 100
   compress: true
+
+database:
+  # mysql, postgres, sqlite
+  type: sqlite
+  dsn: ./db.sqlite
