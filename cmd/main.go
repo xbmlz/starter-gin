@@ -4,15 +4,18 @@ import (
 	"context"
 	"flag"
 
-	"github.com/xbmlz/starter-gin/internal/config"
+	"github.com/xbmlz/starter-gin/internal/conf"
+	"github.com/xbmlz/starter-gin/internal/log"
 	"github.com/xbmlz/starter-gin/internal/server"
 )
 
 func main() {
-	configPath := flag.String("config", "config/config.yaml", "path to config file, e.g. config/config.yaml")
+	configPath := flag.String("config", "config.yaml", "path to config file, e.g. config/config.yaml")
 	flag.Parse()
 
-	err := config.Load(*configPath)
+	log.InitLogger()
+
+	err := conf.Load(*configPath)
 	if err != nil {
 		panic(err)
 	}

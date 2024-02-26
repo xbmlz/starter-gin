@@ -11,7 +11,9 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xbmlz/starter-gin/internal/config"
+	"github.com/xbmlz/starter-gin/internal/conf"
+	"github.com/xbmlz/starter-gin/internal/log"
+	"github.com/xbmlz/starter-gin/internal/middleware"
 )
 
 type Server struct {
@@ -19,12 +21,16 @@ type Server struct {
 }
 
 func NewHTTPServer() *Server {
+	gin.SetMode(gin.DebugMode)
+
 	r := gin.New()
+
+	r.Use(middleware.Logger())
 
 	r.GET("/ping", func(c *gin.Context) { c.String(http.StatusOK, "pong") })
 
 	srv := &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port),
+		Addr:    fmt.Sprintf("%s:%d", conf.Server.Host, conf.Server.Port),
 		Handler: r,
 	}
 
@@ -37,9 +43,9 @@ func (s *Server) Run(ctx context.Context) error {
 	errCh := make(chan error, 1)
 
 	go func() {
+		log.Sugar.Infof("server is running at http://%s:%d", conf.Server.Host, conf.Server.Port)
 		if err := s.srv.ListenAndServe(); err != nil {
-			// TODO log
-			fmt.Printf("failed to start server: %v\n", err)
+			log.Sugar.Errorf("server is stopped: %v", err)
 			errCh <- err
 		}
 	}()
@@ -65,8 +71,7 @@ func (s *Server) Stop() error {
 	go func() {
 		defer wg.Done()
 		if err := s.srv.Shutdown(ctx); err != nil {
-			// TODO log
-			fmt.Printf("failed to shutdown server: %v\n", err)
+			log.Sugar.Errorf("failed to shutdown server: %v", err)
 		}
 	}()
 
