@@ -10,7 +10,11 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/xbmlz/starter-gin/docs"
 	"github.com/xbmlz/starter-gin/internal/conf"
+	"github.com/xbmlz/starter-gin/internal/handler"
 	"github.com/xbmlz/starter-gin/internal/log"
 	"github.com/xbmlz/starter-gin/internal/middleware"
 )
@@ -24,7 +28,20 @@ func NewHTTPServer() *Server {
 
 	r := gin.New()
 
-	r.Use(middleware.Logger())
+	addr := fmt.Sprintf("%s:%d", conf.Server.Host, conf.Server.Port)
+	// swagger doc
+	docs.SwaggerInfo.Host = addr
+	docs.SwaggerInfo.BasePath = "/v1"
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(
+		swaggerfiles.Handler,
+		//ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", conf.GetInt("app.http.port"))),
+		ginSwagger.DefaultModelsExpandDepth(-1),
+	))
+
+	r.Use(
+		// middleware.LogMiddleware(),
+		middleware.CORSMiddleware(),
+	)
 
 	r.LoadHTMLGlob("templates/*")
 
@@ -37,8 +54,17 @@ func NewHTTPServer() *Server {
 
 	r.GET("/ping", func(c *gin.Context) { c.String(http.StatusOK, "pong") })
 
+	v1 := r.Group("/v1")
+	{
+		// No route group has permission
+		noAuthRouter := v1.Group("/")
+		{
+			noAuthRouter.POST("/register", handler.Register)
+		}
+	}
+
 	srv := &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", conf.Server.Host, conf.Server.Port),
+		Addr:    addr,
 		Handler: r,
 	}
 

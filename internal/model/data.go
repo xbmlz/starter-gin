@@ -1,4 +1,4 @@
-package repo
+package model
 
 import (
 	"errors"
@@ -6,7 +6,6 @@ import (
 	"github.com/glebarez/sqlite"
 	"github.com/xbmlz/starter-gin/internal/conf"
 	"github.com/xbmlz/starter-gin/internal/log"
-	"github.com/xbmlz/starter-gin/internal/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -44,9 +43,9 @@ func InitDB() error {
 }
 
 func MigrateDB() error {
-	if err := DB.AutoMigrate(&model.User{}); err != nil {
+	if err := DB.AutoMigrate(&User{}); err != nil {
 		return err
 	}
-	log.Logger.Info("AutoMigrate tables success")
+	log.Sugar.Info("AutoMigrate tables success")
 	return nil
 }
