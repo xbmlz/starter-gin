@@ -2,9 +2,9 @@ APP_NAME = starter-gin
 BIN_DIR = bin
 
 run:
-	@go run ./cmd/.
+	@go run ./cmd/main.go
 
 build:
-	@go build -o $(BIN_DIR)/$(APP_NAME) ./cmd/.
+	@go build -ldflags="-s -w" -o $(BIN_DIR)/$(APP_NAME) ./cmd/main.go
 
 .PHONY: run build

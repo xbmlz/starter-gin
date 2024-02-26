@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 	"time"
 
@@ -27,6 +26,15 @@ func NewHTTPServer() *Server {
 
 	r.Use(middleware.Logger())
 
+	r.LoadHTMLGlob("templates/*")
+
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.tpl", gin.H{
+			"title":   "Starter Gin",
+			"content": "Welcome to Starter Gin!",
+		})
+	})
+
 	r.GET("/ping", func(c *gin.Context) { c.String(http.StatusOK, "pong") })
 
 	srv := &http.Server{
@@ -44,7 +52,7 @@ func (s *Server) Run(ctx context.Context) error {
 
 	go func() {
 		log.Sugar.Infof("server is running at http://%s:%d", conf.Server.Host, conf.Server.Port)
-		if err := s.srv.ListenAndServe(); err != nil {
+		if err := s.srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Sugar.Errorf("server is stopped: %v", err)
 			errCh <- err
 		}
@@ -62,20 +70,14 @@ func (s *Server) Run(ctx context.Context) error {
 }
 
 func (s *Server) Stop() error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	wg := sync.WaitGroup{}
-	wg.Add(1)
-
 	go func() {
-		defer wg.Done()
 		if err := s.srv.Shutdown(ctx); err != nil {
 			log.Sugar.Errorf("failed to shutdown server: %v", err)
 		}
 	}()
 
-	// wait all server graceful shutdown
-	wg.Wait()
 	return nil
 }
