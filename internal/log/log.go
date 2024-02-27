@@ -19,7 +19,7 @@ func InitLogger() {
 
 	var level zapcore.Level
 
-	switch conf.Log.Level {
+	switch conf.Config.Log.Level {
 	case "debug":
 		level = zap.DebugLevel
 	case "info":
@@ -33,11 +33,11 @@ func InitLogger() {
 	}
 
 	hook := lumberjack.Logger{
-		Filename:   conf.Log.Filename,
-		MaxAge:     conf.Log.MaxAge,
-		MaxBackups: conf.Log.MaxBackups,
-		MaxSize:    conf.Log.MaxSize,
-		Compress:   conf.Log.Compress,
+		Filename:   conf.Config.Log.Filename,
+		MaxAge:     conf.Config.Log.MaxAge,
+		MaxBackups: conf.Config.Log.MaxBackups,
+		MaxSize:    conf.Config.Log.MaxSize,
+		Compress:   conf.Config.Log.Compress,
 	}
 
 	encoder := zapcore.NewConsoleEncoder(zapcore.EncoderConfig{

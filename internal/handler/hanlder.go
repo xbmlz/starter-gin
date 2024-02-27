@@ -14,6 +14,23 @@ type Response struct {
 	Data    interface{} `json:"data"`
 }
 
+type Error struct {
+	Code    int
+	Message string
+}
+
+var errorCodeMap = map[error]int{}
+
+func newError(code int, msg string) error {
+	err := errors.New(msg)
+	errorCodeMap[err] = code
+	return err
+}
+
+func (e Error) Error() string {
+	return e.Message
+}
+
 func HandleResponse(ctx *gin.Context, err error, data interface{}) {
 	if err == nil {
 		ctx.JSON(http.StatusOK, Response{
@@ -21,14 +38,23 @@ func HandleResponse(ctx *gin.Context, err error, data interface{}) {
 			Message: "success",
 			Data:    data,
 		})
-	} else {
-		ctx.JSON(http.StatusInternalServerError, Response{
-			Code:    http.StatusInternalServerError,
+		return
+	}
+
+	if code, ok := errorCodeMap[err]; ok {
+		ctx.JSON(code, Response{
+			Code:    code,
 			Message: err.Error(),
 			Data:    nil,
 		})
+		return
 	}
 
+	ctx.JSON(http.StatusInternalServerError, Response{
+		Code:    http.StatusInternalServerError,
+		Message: err.Error(),
+		Data:    nil,
+	})
 }
 
 func BindAndCheck(ctx *gin.Context, req interface{}) bool {

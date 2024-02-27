@@ -21,3 +21,10 @@ func GetUserByEmail(email string) (user *User, err error) {
 	}
 	return user, nil
 }
+
+func GetUsers() (users []User, err error) {
+	if err = DB.Find(&users).Error; err != nil {
+		return nil, err
+	}
+	return users, nil
+}

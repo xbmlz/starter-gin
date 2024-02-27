@@ -14,3 +14,7 @@ database:
   # mysql, postgres, sqlite
   type: sqlite
   dsn: ./db.sqlite
+
+security:
+  jwt_secret: QQYnRFerJTSEcrfB89fw8prOaObmrch8
+  jwt_expire: 3600

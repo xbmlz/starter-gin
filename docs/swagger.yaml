@@ -10,8 +10,10 @@ definitions:
   internal_handler.UserRegisterReq:
     properties:
       email:
+        example: 1234@gmail.com
         type: string
       password:
+        example: "123456"
         type: string
     required:
     - email
@@ -31,11 +33,33 @@ info:
   title: Example API
   version: 1.0.0
 paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 用户登录
+      parameters:
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handler.UserRegisterReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_handler.Response'
+      summary: 用户登录
+      tags:
+      - 用户模块
   /register:
     post:
       consumes:
       - application/json
-      description: 目前只支持邮箱登录
+      description: 用户注册
       parameters:
       - description: params
         in: body
@@ -51,6 +75,21 @@ paths:
           schema:
             $ref: '#/definitions/internal_handler.Response'
       summary: 用户注册
+      tags:
+      - 用户模块
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: 用户列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_handler.Response'
+      summary: 用户列表
       tags:
       - 用户模块
 securityDefinitions:

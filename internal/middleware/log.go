@@ -11,7 +11,6 @@ import (
 )
 
 func LogMiddleware() gin.HandlerFunc {
-
 	return func(c *gin.Context) {
 		path := c.Request.URL.Path
 		query := c.Request.URL.RawQuery
@@ -34,9 +33,9 @@ func LogMiddleware() gin.HandlerFunc {
 		}
 
 		if len(c.Errors) > 0 {
-			log.Logger.Error(conf.Log.Level, fields...)
+			log.Logger.Error(conf.Config.Log.Level, fields...)
 		} else {
-			log.Logger.Info(conf.Log.Level, fields...)
+			log.Logger.Info(conf.Config.Log.Level, fields...)
 		}
 	}
 }

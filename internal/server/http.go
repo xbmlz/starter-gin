@@ -30,11 +30,11 @@ func NewHTTPServer() *Server {
 
 	r := gin.New()
 
-	t, _ := template.ParseFS(ui.Templates, "templates/*.tpl")
+	t, _ := template.ParseFS(ui.Templates, "templates/*.html")
 
 	r.SetHTMLTemplate(t)
 
-	addr := fmt.Sprintf("%s:%d", conf.Server.Host, conf.Server.Port)
+	addr := fmt.Sprintf("%s:%d", conf.Config.Server.Host, conf.Config.Server.Port)
 	// swagger doc
 	docs.SwaggerInfo.Host = addr
 	docs.SwaggerInfo.BasePath = "/v1"
@@ -50,7 +50,7 @@ func NewHTTPServer() *Server {
 	)
 
 	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tpl", gin.H{
+		c.HTML(http.StatusOK, "index.html", gin.H{
 			"title":   "Starter Gin",
 			"content": "Welcome to Starter Gin!",
 		})
@@ -63,7 +63,14 @@ func NewHTTPServer() *Server {
 		// No route group has permission
 		noAuthRouter := v1.Group("/")
 		{
-			noAuthRouter.POST("/register", handler.Register)
+			noAuthRouter.POST("/register", handler.UserRegister)
+			noAuthRouter.POST("/login", handler.UserLogin)
+		}
+
+		// Route group with permission
+		authRouter := v1.Group("/").Use(middleware.AuthMiddleware())
+		{
+			authRouter.GET("/users", handler.GetUsers)
 		}
 	}
 
@@ -81,7 +88,7 @@ func (s *Server) Run(ctx context.Context) error {
 	errCh := make(chan error, 1)
 
 	go func() {
-		log.Sugar.Infof("server is running at http://%s:%d", conf.Server.Host, conf.Server.Port)
+		log.Sugar.Infof("server is running at http://%s:%d", conf.Config.Server.Host, conf.Config.Server.Port)
 		if err := s.srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Sugar.Errorf("server is stopped: %v", err)
 			errCh <- err

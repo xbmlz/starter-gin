@@ -7,7 +7,7 @@ init:
 swag:init
 	@swag init -g ./cmd/main.go -o ./docs --parseDependency
 
-run:
+run:swag
 	@go run ./cmd/.
 
 build:

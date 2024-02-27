@@ -22,13 +22,13 @@ func InitDB() error {
 		err error
 	)
 
-	switch conf.Database.Type {
+	switch conf.Config.Database.Type {
 	case "postgres":
-		db, err = gorm.Open(postgres.Open(conf.Database.DSN), &gorm.Config{})
+		db, err = gorm.Open(postgres.Open(conf.Config.Database.DSN), &gorm.Config{})
 	case "mysql":
-		db, err = gorm.Open(mysql.Open(conf.Database.DSN), &gorm.Config{})
+		db, err = gorm.Open(mysql.Open(conf.Config.Database.DSN), &gorm.Config{})
 	case "sqlite":
-		db, err = gorm.Open(sqlite.Open(conf.Database.DSN), &gorm.Config{})
+		db, err = gorm.Open(sqlite.Open(conf.Config.Database.DSN), &gorm.Config{})
 	default:
 		return errors.New("unsupported database type")
 	}
