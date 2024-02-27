@@ -2,8 +2,6 @@ module github.com/xbmlz/starter-gin
 
 go 1.21
 
-toolchain go1.21.6
-
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/glebarez/sqlite v1.10.0

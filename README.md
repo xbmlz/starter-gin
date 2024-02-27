@@ -28,3 +28,10 @@ Build the application:
 make build
 ```
 
+## Docker
+
+Build the Docker image:
+
+```sh
+make docker
+```

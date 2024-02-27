@@ -1,6 +1,8 @@
 APP_NAME = server
 BIN_DIR = bin
 
+.PHONY: run build init swag docker
+
 init:
 	@go install github.com/swaggo/swag/cmd/swag@latest
 
@@ -14,4 +16,6 @@ build:
 	@go build -ldflags="-s -w" -o $(BIN_DIR)/$(APP_NAME) ./cmd/.
 	@cp config.yaml $(BIN_DIR)/config.yaml
 
-.PHONY: run build init swag
+docker:
+	@docker build -t $(APP_NAME) .
+
