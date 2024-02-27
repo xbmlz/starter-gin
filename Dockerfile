@@ -19,4 +19,4 @@ COPY --from=builder /code/config.yaml /app
 
 EXPOSE 8080
 
-ENTRYPOINT ["/app/server"]
+ENTRYPOINT ["/app/bin/server"]

@@ -12,5 +12,6 @@ run:
 
 build:
 	@go build -ldflags="-s -w" -o $(BIN_DIR)/$(APP_NAME) ./cmd/.
+	@cp config.yaml $(BIN_DIR)/config.yaml
 
 .PHONY: run build init swag

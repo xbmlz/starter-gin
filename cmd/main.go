@@ -41,11 +41,6 @@ func main() {
 		panic(err)
 	}
 
-	err = model.MigrateDB()
-	if err != nil {
-		panic(err)
-	}
-
 	srv := server.NewHTTPServer()
 
 	if err := srv.Run(context.Background()); err != nil {

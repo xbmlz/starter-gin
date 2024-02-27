@@ -39,13 +39,11 @@ func InitDB() error {
 
 	DB = db.Debug()
 
-	return nil
-}
-
-func MigrateDB() error {
 	if err := DB.AutoMigrate(&User{}); err != nil {
 		return err
 	}
-	log.Sugar.Info("AutoMigrate tables success")
+
+	log.Sugar.Info("database auto migrate success")
+
 	return nil
 }

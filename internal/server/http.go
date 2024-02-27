@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
 	"os/signal"
@@ -17,6 +18,7 @@ import (
 	"github.com/xbmlz/starter-gin/internal/handler"
 	"github.com/xbmlz/starter-gin/internal/log"
 	"github.com/xbmlz/starter-gin/internal/middleware"
+	"github.com/xbmlz/starter-gin/ui"
 )
 
 type Server struct {
@@ -27,6 +29,10 @@ func NewHTTPServer() *Server {
 	gin.SetMode(gin.DebugMode)
 
 	r := gin.New()
+
+	t, _ := template.ParseFS(ui.Templates, "templates/*.tpl")
+
+	r.SetHTMLTemplate(t)
 
 	addr := fmt.Sprintf("%s:%d", conf.Server.Host, conf.Server.Port)
 	// swagger doc
@@ -39,11 +45,9 @@ func NewHTTPServer() *Server {
 	))
 
 	r.Use(
-		// middleware.LogMiddleware(),
+		middleware.LogMiddleware(),
 		middleware.CORSMiddleware(),
 	)
-
-	r.LoadHTMLGlob("templates/*")
 
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tpl", gin.H{
