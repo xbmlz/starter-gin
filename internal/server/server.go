@@ -18,7 +18,7 @@ func Run() {
 
 	addr := env.GetString("SERVER_ADDR", "0.0.0.0:8080")
 
-	router := gin.New()
+	router := gin.Default()
 
 	api.RegiesterRouter(router)
 

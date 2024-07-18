@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/glebarez/sqlite"
+	"github.com/xbmlz/starter-gin/api/model"
 	"github.com/xbmlz/starter-gin/pkg/utils/env"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -43,6 +44,8 @@ func Init() (err error) {
 	if err != nil {
 		return err
 	}
+
+	db.AutoMigrate(&model.User{}, &model.Menu{})
 
 	return nil
 }

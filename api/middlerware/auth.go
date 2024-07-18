@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/xbmlz/starter-gin/api/service"
 )
 
 func Auth() gin.HandlerFunc {
@@ -16,6 +17,13 @@ func Auth() gin.HandlerFunc {
 			return
 		}
 
+		claims, err := service.TokenParse(token)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			return
+		}
+
+		c.Set("claims", claims)
 		c.Next()
 	}
 }
