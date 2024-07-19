@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+
 	"github.com/xbmlz/starter-gin/api/model"
 	"github.com/xbmlz/starter-gin/internal/db"
 )
@@ -8,11 +10,18 @@ import (
 type MenuService struct {
 }
 
-func (s *MenuService) CreateMenu(menu *model.Menu) error {
+func (s *MenuService) Create(menu *model.Menu) error {
 	return db.Get().Create(menu).Error
 }
 
-func (s *MenuService) GetMenus() ([]model.Menu, error) {
+func (s *MenuService) Update(menu *model.Menu) error {
+	if menu.ID == menu.ParentID {
+		return errors.New("parent id cannot be the same as menu id")
+	}
+	return db.Get().Save(menu).Error
+}
+
+func (s *MenuService) List() ([]model.Menu, error) {
 	var menus []model.Menu
 	err := db.Get().Find(&menus).Error
 	if err != nil {

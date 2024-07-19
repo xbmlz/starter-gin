@@ -24,6 +24,9 @@ dev:
 	--screen.clear_on_rebuild true \
 	--log.main_only true
 
+swag:
+	@go run github.com/swaggo/swag/cmd/swag@latest init --parseDependency
+
 db-up:
 	$(MIGRATION_CMD) up
 

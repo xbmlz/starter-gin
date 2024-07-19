@@ -2,6 +2,8 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/xbmlz/starter-gin/api/handler/request"
+	"github.com/xbmlz/starter-gin/api/handler/response"
 	"github.com/xbmlz/starter-gin/api/model"
 )
 
@@ -13,18 +15,37 @@ import (
 // @Success 200 {object} model.Menu
 func CreateMenu(c *gin.Context) {
 	var menu model.Menu
-	if err := c.ShouldBindJSON(&menu); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+	if request.BindJSON(c, &menu) {
 		return
 	}
 
-	err := menuService.CreateMenu(&menu)
+	err := menuService.Create(&menu)
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		response.Error(c, err.Error())
 		return
 	}
 
-	c.JSON(200, menu)
+	response.Ok(c, menu)
+}
+
+// @Tags Menu
+// @Summary Update a menu
+// @Accept  json
+// @Produce  json
+// @Param menu body model.Menu true "Menu object"
+// @Success 200 {object} model.Menu
+func UpdateMenu(c *gin.Context) {
+	var menu model.Menu
+	if request.BindJSON(c, &menu) {
+		return
+	}
+	err := menuService.Update(&menu)
+	if err != nil {
+		response.Error(c, err.Error())
+		return
+	}
+
+	response.Ok(c, menu)
 }
 
 // @Tags Menu
@@ -32,10 +53,10 @@ func CreateMenu(c *gin.Context) {
 // @Produce  json
 // @Success 200 {array} model.Menu
 func GetMenus(c *gin.Context) {
-	menus, err := menuService.GetMenus()
+	menus, err := menuService.List()
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		response.Error(c, err.Error())
 		return
 	}
-	c.JSON(200, menus)
+	response.Ok(c, menus)
 }

@@ -1,10 +1,9 @@
 package handler
 
 import (
-	"fmt"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"github.com/xbmlz/starter-gin/api/handler/request"
+	"github.com/xbmlz/starter-gin/api/handler/response"
 	"github.com/xbmlz/starter-gin/api/model"
 	"github.com/xbmlz/starter-gin/api/service"
 )
@@ -29,26 +28,25 @@ type RegisterRequest struct {
 // @Accept  json
 // @Produce  json
 // @Param body body LoginRequest true "Login Request"
-// @Success 200 {object} LoginResponse
+// @Success 200 {object} response.Body{LoginResponse}
 func Login(c *gin.Context) {
 	req := LoginRequest{}
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if request.BindJSON(c, &req) {
 		return
 	}
 	user, err := userService.VerifyUser(req.Username, req.Password)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		response.Unauthorized(c, err.Error())
 		return
 	}
 
 	token, err := service.TokenGenerate(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		response.Error(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, LoginResponse{Token: fmt.Sprintf("Bearer %s", token)})
+	response.Ok(c, LoginResponse{Token: token})
 }
 
 // @Tags Auth
@@ -60,8 +58,7 @@ func Login(c *gin.Context) {
 // @Success 200 {object} model.User
 func Register(c *gin.Context) {
 	req := RegisterRequest{}
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if request.BindJSON(c, &req) {
 		return
 	}
 
@@ -72,11 +69,11 @@ func Register(c *gin.Context) {
 
 	user, err := userService.CreateUser(userIn)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		response.Error(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusCreated, user)
+	response.Ok(c, user)
 }
 
 func Logout(c *gin.Context) {
