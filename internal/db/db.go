@@ -6,8 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/glebarez/sqlite"
-	"github.com/xbmlz/starter-gin/api/model"
-	"github.com/xbmlz/starter-gin/pkg/utils/env"
+	"github.com/xbmlz/starter-gin/pkg/env"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -19,8 +18,8 @@ func Get() *gorm.DB {
 	return db
 }
 
-func Init() (err error) {
-	driver := env.GetString("DB_DRIVER", "sqlite3")
+func Connect() (err error) {
+	driver := env.GetString("DB_DRIVER", "sqlite")
 	dsn := env.GetString("DB_URL", "./db.sqlite")
 
 	if driver == "sqlite" {
@@ -45,13 +44,11 @@ func Init() (err error) {
 		return err
 	}
 
-	db.AutoMigrate(&model.User{}, &model.Menu{})
-
 	return nil
 }
 
-func MustInit() {
-	if err := Init(); err != nil {
+func MustConnect() {
+	if err := Connect(); err != nil {
 		panic(err)
 	}
 }

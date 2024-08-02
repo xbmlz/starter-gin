@@ -5,18 +5,19 @@ ifneq (,$(wildcard ./.env))
 endif
 
 ifeq ($(OS),Windows_NT)
-	BINARY_NAME = bin/$(APP_NAME).exe
+	BINARY = bin/$(APP_NAME).exe
 else
-	BINARY_NAME = bin/$(APP_NAME)
+	BINARY = bin/$(APP_NAME)
 endif
 
+MAIN=cmd/main.go
 
 MIGRATION_DIR="migrations"
 MIGRATION_CMD=@GOOSE_DRIVER=$(DB_DRIVER) GOOSE_DBSTRING=$(DB_DSN) go run github.com/pressly/goose/v3/cmd/goose@latest -dir=$(MIGRATION_DIR)
 
 dev:
 	@go run github.com/cosmtrek/air@v1.51.0 \
-	--build.cmd "go build --tags dev -o ${BINARY_NAME} ." --build.bin "${BINARY_NAME}" --build.delay "100" \
+	--build.cmd "go build --tags dev -o ${BINARY} ${MAIN}" --build.bin "${BINARY}" --build.delay "100" \
 	--build.exclude_dir "" \
 	--build.include_ext "go" \
 	--build.stop_on_error "false" \
@@ -39,5 +40,5 @@ db-status:
 db-reset:
 	$(MIGRATION_CMD) reset
 
-db-create:
+db-new:
 	$(MIGRATION_CMD) create $(filter-out $@,$(MAKECMDGOALS)) sql
