@@ -2,18 +2,20 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>{{.title }}</title>
-    {{ template "layouts/head.html". }}
-  </head>
 
-  <body>
-    <div id="layui-fluid">Empty</div>
+<head>
+  <title>{{.title }}</title>
+  {{ template "layouts/head.html". }}
+</head>
 
-    {{ template "layouts/script.html". }}
-    <script>
-      layui.config({ base: "/static/modules/" }).use("empty");
-    </script>
-  </body>
+<body>
+  <div id="layui-fluid">Empty</div>
+
+  {{ template "layouts/script.html". }}
+  <script>
+    layui.config({ base: "/static/modules/" }).use("empty");
+  </script>
+</body>
+
 </html>
 {{ end}}

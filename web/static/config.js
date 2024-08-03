@@ -36,7 +36,7 @@ layui.define(['all'], function (exports) {
 
     // 自定义请求字段
     request: {
-      tokenName: false // 自动携带 token 的字段名（如：access_token）。可设置 false 不携带。
+      tokenName: "Authorization" // 自动携带 token 的字段名（如：access_token）。可设置 false 不携带。
     },
 
     // 自定义响应字段
@@ -172,6 +172,5 @@ layui.define(['all'], function (exports) {
       // 如果本地已经有主题色记录，则以本地记录为优先，除非请求本地数据（localStorage）
       initColorIndex: 0
     },
-
   })
 })
