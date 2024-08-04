@@ -49,13 +49,20 @@
     </li>
     <li class="layui-nav-item" lay-unselect>
       <a href="javascript:;">
+        <img src="{{ .user.AvatarURL }}" class="layui-nav-img">
         <cite>{{ .user.Username}}</cite>
       </a>
       <dl class="layui-nav-child">
-        <dd><a lay-href="set/user/info.html">基本资料</a></dd>
-        <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+        <dd style="text-align: center">
+          <a lay-href="profile.html">基本资料</a>
+        </dd>
+        <dd style="text-align: center">
+          <a lay-href="password.html">修改密码</a>
+        </dd>
         <hr />
-        <dd layadmin-event="logout" style="text-align: center"><a>退出</a></dd>
+        <dd layadmin-event="logout" style="text-align: center">
+          <a>退出</a>
+        </dd>
       </dl>
     </li>
 

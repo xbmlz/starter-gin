@@ -2,7 +2,7 @@ layui.define([], function (exports) {
 
   const {} = layui;
 
-  console.log('TODO: empty.js');
+  console.log('TODO: password.js');
 
-  exports('empty', {});
+  exports('password', {});
 });

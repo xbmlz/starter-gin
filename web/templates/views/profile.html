@@ -1,0 +1,107 @@
+{{ define "views/profile.html" }}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>{{.title }}</title>
+  {{ template "layouts/head.html". }}
+</head>
+
+<body layadmin-themealias="default">
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">设置我的资料</div>
+          <div class="layui-card-body" pad15="">
+            <div class="layui-row layui-col-space15">
+              <div class="layui-col-12 layui-col-md8">
+                <div class="layui-form" lay-filter="profileForm">
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-inline" style="width: 300px;">
+                      <input type="text" name="username" value="张三" readonly="" class="layui-input">
+                    </div>
+                    <!-- <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div> -->
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">昵称</label>
+                    <div class="layui-input-inline" style="width: 300px;">
+                      <input type="text" name="nickname" value="tester" lay-verify="nickname" autocomplete="off"
+                        placeholder="请输入昵称" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="gender" value="1" title="男" checked="">
+                      <div class="layui-unselect layui-form-radio layui-form-radioed">
+                        <i class="layui-anim layui-icon layui-icon-radio"></i>
+                        <div>男</div>
+                      </div>
+                      <input type="radio" name="gender" value="2" title="女">
+                      <div class="layui-unselect layui-form-radio">
+                        <i class="layui-anim layui-icon layui-icon-circle"></i>
+                        <div>女</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="layui-form-item layui-hide">
+                    <label class="layui-form-label">头像</label>
+                    <div class="layui-input-inline" style="width: 300px;">
+                      <input type="text" name="avatar_url" value="" lay-verify="avatar_url" autocomplete="off"
+                        class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">手机</label>
+                    <div class="layui-input-inline" style="width: 300px;">
+                      <input type="text" name="phone" value="" lay-verify="phone" autocomplete="off"
+                        class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-inline" style="width: 300px;">
+                      <input type="text" name="email" value="" lay-verify="email" autocomplete="off"
+                        class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <div class="layui-input-block">
+                      <button class="layui-btn" lay-submit="" lay-filter="updateProfile">确认修改</button>
+                      <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="layui-col-12 layui-col-md4">
+                <div class="layui-form-item">头像</div>
+                <div class="layui-input-inline">
+                  <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="upload-avatar-img"
+                      style="width: 150px; height: 150px; border-radius: 50%; cursor: pointer;">
+                    <div id="upload-avatar-text"></div>
+                  </div>
+                  <div class="layui-progress layui-hide" lay-showPercent="yes" lay-filter="filter-upload-avatar">
+                    <div class="layui-progress-bar" lay-percent=""></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{ template "layouts/script.html". }}
+  <script>
+    layui.use(["index", "profile"]);
+  </script>
+</body>
+
+</html>
+{{ end}}

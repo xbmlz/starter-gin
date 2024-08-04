@@ -2,16 +2,24 @@ package model
 
 import (
 	"errors"
+	"time"
 
 	"github.com/xbmlz/starter-gin/internal/db"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
-	ID       uint   `gorm:"primary_key" json:"id"`
-	Email    string `json:"email"`
-	Username string `json:"username"`
-	Password string `json:"-"`
+	ID        uint      `gorm:"primary_key" json:"id"`
+	Username  string    `json:"username"`
+	Nickname  string    `json:"nickname"`
+	Gender    int       `json:"gender"`
+	Phone     string    `json:"phone"`
+	Password  string    `json:"-"`
+	Email     string    `json:"email"`
+	AvatarURL string    `json:"avatar_url"`
+	Status    int       `json:"status"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (u *User) TableName() string {
@@ -59,4 +67,8 @@ func VerifyUser(username, password string) (user *User, err error) {
 func GetUserByID(id uint) (user *User, err error) {
 	err = db.Get().Where("id = ?", id).First(&user).Error
 	return user, err
+}
+
+func UpdateUser(user *User) error {
+	return db.Get().Save(user).Error
 }

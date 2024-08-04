@@ -47,7 +47,7 @@ func ExtractToken(ctx *gin.Context) (token string) {
 
 func AbortHTML(c *gin.Context) {
 	// redirect to login page
-	c.Redirect(http.StatusFound, "/login")
+	c.Redirect(http.StatusFound, "/login.html")
 	c.Abort()
 }
 

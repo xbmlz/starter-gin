@@ -3,7 +3,10 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/xbmlz/starter-gin/internal/constant"
+	"github.com/xbmlz/starter-gin/internal/model"
 )
 
 type BaseHandler struct {
@@ -67,4 +70,23 @@ func (h *BaseHandler) Bind(c *gin.Context, obj interface{}) bool {
 		return true
 	}
 	return false
+}
+
+func (h *BaseHandler) GetCurrentUser(c *gin.Context) *model.User {
+	// Get user ID from session
+	session := sessions.Default(c)
+	userID := session.Get(constant.SessionUserKey)
+	if userID == nil {
+		h.Unauthorized(c, "Unauthorized")
+		return nil
+	}
+
+	// Get user from database
+	user, err := model.GetUserByID(userID.(uint))
+	if err != nil {
+		h.Error(c, err.Error())
+		return nil
+	}
+
+	return user
 }

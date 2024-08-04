@@ -18,8 +18,8 @@ func Init(r *gin.Engine) {
 	handlers.NewViewHandler().Register(r)
 	handlers.NewAuthHandler().Register(r)
 
-	authRouter := r.Group("/api", middleware.JWTAuthRequired())
+	authRouter := r.Group("/api", middleware.SessionAuthRequired())
 	{
-		handlers.NewDemoHandler().Register(authRouter)
+		handlers.NewUserHandler().Register(authRouter)
 	}
 }

@@ -29,7 +29,7 @@ layui.define(function (exports) {
           remove: true
         });
         admin.exit(function () {
-          location.href = 'login';
+          location.href = 'login.html';
         });
       }
     });

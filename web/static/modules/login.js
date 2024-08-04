@@ -16,7 +16,7 @@ layui.extend({
           icon: 1,
           time: 1000,
         }, function () {
-          location.href = "/";
+          location.href = "/main.html";
         });
       },
     });
