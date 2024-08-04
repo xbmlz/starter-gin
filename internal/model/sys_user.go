@@ -2,24 +2,21 @@ package model
 
 import (
 	"errors"
-	"time"
 
 	"github.com/xbmlz/starter-gin/internal/db"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
-	ID        uint      `gorm:"primary_key" json:"id"`
-	Username  string    `json:"username"`
-	Nickname  string    `json:"nickname"`
-	Gender    int       `json:"gender"`
-	Phone     string    `json:"phone"`
-	Password  string    `json:"-"`
-	Email     string    `json:"email"`
-	AvatarURL string    `json:"avatar_url"`
-	Status    int       `json:"status"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	BaseModel
+	Username  string `json:"username"`
+	Nickname  string `json:"nickname"`
+	Gender    int    `json:"gender"`
+	Phone     string `json:"phone"`
+	Password  string `json:"-"`
+	Email     string `json:"email"`
+	AvatarURL string `json:"avatar_url"`
+	Status    int    `json:"status"`
 }
 
 func (u *User) TableName() string {
