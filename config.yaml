@@ -1,0 +1,10 @@
+server:
+  http:
+    mode: release
+    host: 0.0.0.0
+    port: 8080
+
+data:
+  database:
+    driver: sqlite3
+    dsn: data.db
